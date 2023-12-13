@@ -1,0 +1,94 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaApplicationTest.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaApplicationTest.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AvaloniaApplicationTest">
+
+	<Design.DataContext>
+		<!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+
+	<Window.Styles>
+		
+		<!-- Pane button styles-->
+		
+		<Style Selector="SplitView[IsPaneOpen=True] Button TextBlock.closed">
+			<Setter Property="IsVisible" Value="False"/>
+		</Style>
+
+		<Style Selector="SplitView[IsPaneOpen=True] Button TextBlock.opened">
+			<Setter Property="IsVisible" Value="True"/>
+		</Style>
+
+		<Style Selector="SplitView[IsPaneOpen=False] Button TextBlock.closed">
+			<Setter Property="IsVisible" Value="True"/>
+		</Style>
+
+		<Style Selector="SplitView[IsPaneOpen=False] Button TextBlock.opened">
+			<Setter Property="IsVisible" Value="False"/>
+		</Style>
+
+		<!-- Pane styles (animation)-->
+		
+		<Style Selector="SplitView[IsPaneOpen=True] TextBlock.pane">
+			<Setter Property="Opacity" Value="1"/>
+			<Setter Property="RenderTransform" Value="translateX(0px)"/>
+		</Style>
+
+		<Style Selector="SplitView[IsPaneOpen=False] TextBlock.pane">
+			<Setter Property="Opacity" Value="0"/>
+			<Setter Property="RenderTransform" Value="translateX(-20px)"/>
+		</Style>
+	
+		
+	</Window.Styles>
+
+	<SplitView Classes="Pane"
+			IsPaneOpen="{Binding IsPaneOpen}"
+			DisplayMode="CompactInline"
+			OpenPaneLength="300"
+			CompactPaneLength="29">
+		<SplitView.Pane>
+			<DockPanel>
+				<Button Command="{Binding TogglePanelCommand}"
+						DockPanel.Dock="Top"
+						HorizontalAlignment="Right"
+						CornerRadius="0">
+					<Panel>
+						<TextBlock Classes="closed" Text="&gt;"/>
+						<TextBlock Classes="opened" Text="&lt;"/>
+					</Panel>
+				</Button>
+				
+				<TextBlock Classes="pane"
+						   Text="Pane"
+						   FontSize="24"
+						   VerticalAlignment="Center"
+						   HorizontalAlignment="Center">
+					<TextBlock.Transitions>
+						<Transitions>
+							<DoubleTransition Property="Opacity" Duration="0:0:0.3"/>
+							<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.3"/>
+						</Transitions>
+					</TextBlock.Transitions>
+				</TextBlock>
+			</DockPanel>
+
+		</SplitView.Pane>
+
+		<Grid>
+			<TextBlock Text="Content"
+					   FontSize="24"
+					   VerticalAlignment="Center"
+					   HorizontalAlignment="Center"/>
+		</Grid>
+	</SplitView>
+
+</Window>
